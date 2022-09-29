@@ -3,8 +3,10 @@
 
 %% select which operation to perform and parameter (if applies)
 image_name = 'gantrycrane.png';  % image to open and transform
-operation_name = 'negative';  % the name of the operation (see the 'get_monadic_operation.m')
-parameter = [];  % operation parameter, if any (otherwise set to [])
+%operation_name = 'negative';  % the name of the operation (see the 'get_monadic_operation.m')
+operation_name = 'threshold';  % the name of the operation (see the 'get_monadic_operation.m')
+%operation_name = 'negative';  % the name of the operation (see the 'get_monadic_operation.m')
+parameter = 0.3;  % operation parameter, if any (otherwise set to [])
 
 %% actual script - you don't need to change anything here
 img = get_image(image_name);

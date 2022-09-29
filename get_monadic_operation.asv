@@ -32,7 +32,7 @@ function [lt] = threshold(l, th)
     if th < min(l(:)) || th > max(l(:))
         error("Theta parameter of threshold operation is outside of the allowed range!")
     end
-    lt = l > th;
+    lt = l( > th ? 0 : 1;
 end
 
 function [lt] = brightness_adj(l, b)
