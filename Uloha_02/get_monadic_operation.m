@@ -39,35 +39,45 @@ function [lt] = brightness_adj(l, b)
     if b < -1 || b > 1
         error("The parameter of brightness adjustment is outside of the allowed range!")
     end
-    lt = l; % TODO: replace with a proper computation of the monadic op
+    lt = l + b;
+    lt((l + b) > 1) = 1;
+    lt((l + b) < 0) = 0;
+    
 end
 
 function [lt] = gamma_correction(l, gamma)
     if gamma <= 0
         error("The parameter of gamma correction is outside of the allowed range!")
     end
-    lt = l; % TODO: replace with a proper computation of the monadic op
+    lt = l.^gamma;
 end
 
 function [lt] = contrast(l, c)
     if c < 0
         error("The parameter of contrast enhancement is outside of the allowed range!")
     end
-    lt = l; % TODO: replace with a proper computation of the monadic op
+    lt = l*c;
+    lt(l*c > 1) = 1;
 end
 
 function [lt] = non_linear_contrast(l, alpha)
-    if alpha < 0
+    if alpha < 0 %|| alpha > 1
         error("The parameter of non-linear contrast enhancement is outside of the allowed range!")
     end
-    lt = l; % TODO: replace with a proper computation of the monadic op
+    gamma = 1/(1-alpha);
+    lt_1 = 0.5*(2*l).^gamma;
+    lt_2 = 1 - 0.5*(2 - 2*l).^gamma;
+    
+    lt = lt_1;
+    lt(l >= 0.5) = lt_2(l >= 0.5);
 end
 
 function [lt] = log_scale(l, scale)
+    % similar effect to the gamma correction
     if scale <= -1
         error("The parameter of logarithmic scaling is outside of the allowed range!")
     end
-    lt = l; % TODO: replace with a proper computation of the monadic op
+    lt = log(1 + l.*scale)/(log(1 + scale));
 end
 
 function [lt] = quantization(l, q_levels)
@@ -75,7 +85,11 @@ function [lt] = quantization(l, q_levels)
     if q_levels < 2
         error("The number of quantization levels is outside of the allowed range!")
     end
-    lt = l; % TODO: replace with a proper computation of the monadic op
+    
+    lt = l;
+    for i = 0:q_levels-1
+        lt(l >= i/q_levels) = i/q_levels;
+    end
 end
 
 %% End of "TO BE IMPLEMENTED" functions. Don't change the function below.
