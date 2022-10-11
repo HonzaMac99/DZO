@@ -23,15 +23,19 @@ switch sig_type
         I = I + a;
     case 'harmonic'  %u, v
         u = varargin{1}; v = varargin{2}; phi = varargin{3};
-        I = 0;
+        for i = 1:imsize(1)
+            for j = 1:imsize(2)
+                I(i, j) = cos(u*j + v*i + phi);
+            end
+        end
     case 'square'    %s
         s = varargin{1};       
         centre_x = imsize(1)/2;
         centre_y = imsize(2)/2;
         for i = 1:imsize(1)
             for j = 1:imsize(2)
-                if (j > centre_x - s && j < centre_x + s) || ...
-                   (i > cnetre_y - s && i < centre_y + s)
+                if (j > centre_x - s && j < centre_x + s) && ...
+                   (i > centre_y - s && i < centre_y + s)
                     I(i, j) = 1;
                 end
             end
@@ -50,14 +54,18 @@ switch sig_type
         end  
     case 'Gaussian'  %sigma
         sigma = varargin{1};
-        %TODO {
-        % I =
-        %}
+        for i = 1:imsize(1)
+            for j = 1:imsize(2)
+                I(i, j) = exp(-(j^2 + i^2)/(2*sigma^2));
+            end
+        end            
     case 'Gabor'     %u0,v0,sigma  (OPTIONAL)
         u0 = varargin{1}; v0 = varargin{2}; sigma = varargin{3};
-        %TODO {
-        % I =
-        %}
+        for i = 1:imsize(1)
+            for j = 1:imsize(2)
+                I(i, j) = cos(u0*j + v0*i)*exp(-(j^2 + i^2)/(2*sigma^2));
+            end
+        end
     otherwise
         error('Unknown signal type.')
 end

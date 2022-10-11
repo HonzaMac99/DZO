@@ -1,6 +1,5 @@
 fig = 0;
-
-%% Show spectrum of common 2D signals 
+%% Show spectrum of common 2D signals
 
 %TODO {
 % - Implement a 2D signal generator. It will generate common 2D signals
@@ -79,7 +78,6 @@ X = fft2(x);
 
 fig=fig+1; figure(fig); imagesc(x); colormap gray; axis image; title('Gabor')
 fig=fig+1; figure(fig); show_spectrum(X,'gray'); title('Gabor magnitude spectrum')
-
 %% Spectrum of a photo, importance of a phase spectrum
 
 x0 = imread('Lenna.png');
@@ -124,8 +122,6 @@ fig = fig+1;
 figure(fig);
 imagesc(x2); colormap gray
 axis image; title('Reconstraucted image - Altered spectrum magnitude');
-
-
 %% Spectrum of translated/rotated image
 
 x = imread('A_black.png'); 
@@ -157,7 +153,6 @@ axis image;
 % magnitude spectrum  - Use rotated image "A_black_45.png"
 %
 %}
-
 %% Low/high pass filtering in frequency domain (OPTIONAL)
 
 x = imread('Lenna.png');
@@ -223,4 +218,3 @@ yh = real(ifft2(Yh));
 fig = fig+1; figure(fig); 
 image(yh); colormap gray
 axis image; title('High-pass filtered image');
-
