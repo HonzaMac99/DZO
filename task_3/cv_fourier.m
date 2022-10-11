@@ -58,6 +58,13 @@ X = fft2(x);
 fig=fig+1; figure(fig); imagesc(x); colormap gray; axis image; title('Circ')
 fig=fig+1; figure(fig); show_spectrum(X,'gray'); title('Circ magnitude spectrum')
 
+%inv_circ
+x = image_generator('inv_circ',[512,512],15);
+X = fft2(x);
+
+fig=fig+1; figure(fig); imagesc(x); colormap gray; axis image; title('Inverse circ')
+fig=fig+1; figure(fig); show_spectrum(X,'gray'); title('Inverse circ magnitude spectrum')
+
 %Gaussian
 x = image_generator('Gaussian',[512,512],5);
 X = fft2(x);
@@ -178,7 +185,6 @@ X = fft2(x_rotated_45);
 fig = fig+1; figure(fig); 
 show_spectrum(X,'gray'); title('Magnitude spectrum');
 axis image;
-
 %% Low/high pass filtering in frequency domain (OPTIONAL)
 
 x = imread('Lenna.png');
@@ -190,6 +196,7 @@ axis image; title('Input image');
 
 X = fft2(x); 
 
+fig = 0;
 fig = fig+1; figure(fig); 
 show_spectrum(X,'gray'); cl = get(gca, 'clim'); 
 axis image; title('Magnitude spectrum');
@@ -203,17 +210,16 @@ axis image; title('Magnitude spectrum');
 % Construct a high-pass filtered image by removing removing low frequencies
 % - Construct a circular filter which cuts off all frequencies below pi/8
 % - Multiply the spectrum with the circular filter H
-%
-% %low pass 
-% G = ...
-% Yg = ... %low-pass filtered spectrum
-%
-% 
-% %high pass
-% H = ...
-% Yh = ... %high-pass filtered spectrum
-%
-%}
+
+%low pass 
+G = image_generator('Gaussian', imsize, 20);
+Yg = X.*G; %low-pass filtered spectrum
+
+
+%high pass
+H = image_generator('inv_circ', imsize, 15);
+Yh = X.*H; %high-pass filtered spectrum
+
 
 %low pass
 fig = fig+1; figure(fig); 

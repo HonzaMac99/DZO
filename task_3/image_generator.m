@@ -59,6 +59,19 @@ switch sig_type
                 end
             end
         end  
+    
+    case 'inv_circ'      %r
+        r = varargin{1};
+        I = ones(imsize);
+        
+        for i = 1:imsize(1)
+            for j = 1:imsize(2)
+                dist_to_centre = sqrt((j-centre_x)^2 + (i-centre_y)^2);
+                if dist_to_centre < r
+                    I(i, j) = 0;
+                end
+            end
+        end
         
     case 'Gaussian'  %sigma
         sigma = varargin{1};
