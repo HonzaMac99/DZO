@@ -18,7 +18,7 @@ function [M]=show_spectrum(X, cmap, clim)
 %  M =   
 %}
 
-M = log(abs(fftshift(X)));
+M = log(abs(fftshift(X)) + 1);
 
 imagesc(M);
 axis image; 

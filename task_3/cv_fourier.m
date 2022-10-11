@@ -85,22 +85,24 @@ x0 = double(sum(x0,3)/3);
 
 X0 = fft2(x0);
 
-%TODO {
+%TODO
 %  - Switch phase of the specrum to constant 0. X1 will be the spectrum of
 %    the image having the same magnitude as the spectrum of the input image,
 %    but a constant (zero) phase. 
-%
-%  X1 = 
-%}
+
+A = abs(X0);
+Phi = angle(X0);
+X1 = A;
+
 x1 = ifft2(X1); %inverse fft (result is an image)
 
-%TODO {
+%TODO 
 %  - Switch magnitude of the specrum to constant 1. X2 will be the spectrum
 %    of the image having the same phase as the spectrum of the input
 %    image, but a constant magnitude (a_i = 1 for all frequencies). 
-%
-%  X2 = 
-%}
+
+X2 = ones(size(X0)).*exp(Phi*1i);
+
 x2 = real(ifft2(X2)); %inverse fft (result is an image)
 
 fig = fig+1;
@@ -121,7 +123,7 @@ axis image; title('Reconstructed image - Altered spectrum phase');
 fig = fig+1;
 figure(fig);
 imagesc(x2); colormap gray
-axis image; title('Reconstraucted image - Altered spectrum magnitude');
+axis image; title('Reconstructed image - Altered spectrum magnitude');
 %% Spectrum of translated/rotated image
 
 x = imread('A_black.png'); 
@@ -136,23 +138,47 @@ fig = fig+1; figure(fig);
 show_spectrum(X,'gray'); title('Magnitude spectrum');
 axis image;
 
-%TODO {
-% Translate the image by 100px horizontally and by 50 px vertically, show
-% the image and the magnitude spectrum
-%
-%}
+%-----------------------------------------------------------------------
+x_translated = zeros(size(x));
+x_translated(101:end, 51:end) = x(1:end-100, 1:end-50);
 
-%TODO {
-% Rotate the image by 90 degrees counterclockwise, show the image and the
-% magnitude spectrum 
-%
-%}
+fig = fig+1; figure(fig); 
+imagesc(x_translated); colormap gray; title('Translated image');
+axis image;
 
-%TODO {
-% Rotate the image by 45 degrees clockwise, show the image and the
-% magnitude spectrum  - Use rotated image "A_black_45.png"
-%
-%}
+X = fft2(x_translated); 
+
+fig = fig+1; figure(fig); 
+show_spectrum(X,'gray'); title('Magnitude spectrum');
+axis image;
+
+%-----------------------------------------------------------------------
+x_rotated = x.';
+
+fig = fig+1; figure(fig); 
+imagesc(x_rotated); colormap gray; title('Rotated image by 90 deg');
+axis image;
+
+X = fft2(x_rotated); 
+
+fig = fig+1; figure(fig); 
+show_spectrum(X,'gray'); title('Magnitude spectrum');
+axis image;
+
+
+%-----------------------------------------------------------------------
+x_rotated_45 = imread('A_black_45.png');
+
+fig = fig+1; figure(fig); 
+imagesc(x_rotated_45); colormap gray; title('Rotated image by 45 deg');
+axis image;
+
+X = fft2(x_rotated_45); 
+
+fig = fig+1; figure(fig); 
+show_spectrum(X,'gray'); title('Magnitude spectrum');
+axis image;
+
 %% Low/high pass filtering in frequency domain (OPTIONAL)
 
 x = imread('Lenna.png');
