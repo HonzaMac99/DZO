@@ -1,17 +1,13 @@
 fig = 0;
-
-%% Sampling theorem, aliasing 
-%
-% We will show what happens with the spectrum when the image is 
-% sampled. Then the image will be reconstructed from the sampled spectrum
-% using the Shanon reconstruction filter. 
-%  
-% The procedure (sampling/reconstruction) will be repeated with increasing 
-% sampling factor, namely sampling by 2,4,8,16,32. You will see that it is
-% possible to reconstruct the sampled image without artifacts when the
-% condition of the Sampling Thorem holds. 
-%  
-%
+%% Sampling theorem, aliasing
+% We will show what happens with the spectrum when the image is sampled. Then 
+% the image will be reconstructed from the sampled spectrum using the Shanon reconstruction 
+% filter. 
+% 
+% The procedure (sampling/reconstruction) will be repeated with increasing sampling 
+% factor, namely sampling by 2,4,8,16,32. You will see that it is possible to 
+% reconstruct the sampled image without artifacts when the condition of the Sampling 
+% Thorem holds. 
 
 % input image 
 x = image_generator('Gaussian', [512,512], 10);
@@ -53,9 +49,9 @@ for i=1:5
     %   highest frequency in the signal.
     % 
     %   S = ... (frequency domain filter of the same size as the spectrum)
-    %
-    %S = image_generator('square',size(X),size(X)/T/2);
-    %}
+    
+    S = image_generator('square',size(X),30);
+    
     
     figure(fig); hold on %Visualize the reconstruction filter extent
     tmp_x = find(sum(S,2)>0); 
@@ -76,31 +72,23 @@ for i=1:5
     title(sprintf('Reconstructed spectrum (factor %i)',T))
       
 end
-
-
 %% Sampling theorem, aliasing, antialising filter (OPTIONAL)
-%
-% We will (again) show what happens when you sample an image that contains
-% high-frequencies so that the condition of the Sampling Theorem is
-% violated. 
+% We will (again) show what happens when you sample an image that contains high-frequencies 
+% so that the condition of the Sampling Theorem is violated. 
 % 
-% In case you are supposed to subsample an image by a given factor (e.g. 4
-% in this case), you need to apply a filter, "anti-aliasing" filter, that
-% changes the spectrum of the input image to preserve the Sampling Theorem
-% condition. 
-%
-% Finally, compare the reconstructed images when the anti-aliasing filter
-% is and is not used. Finally, see the effect of the anti-aliasing filter
-% when the image is subsampled, i.e. sampled and reduced in size by the
-% same factor. 
-%
-% Important: 
-%   Note that, when you see images in a Matlab window, they are usually
-%   sub-sampled based on the resolution of your screen. This may result in
-%   seeing aliasing effect, while the original image is aliasing free. To
-%   avoid this, maximize the window, zoom in, or save the image and see it
-%   in your favourite image presentation app in full resolution. 
-%
+% In case you are supposed to subsample an image by a given factor (e.g. 4 in 
+% this case), you need to apply a filter, "anti-aliasing" filter, that changes 
+% the spectrum of the input image to preserve the Sampling Theorem condition. 
+% 
+% Finally, compare the reconstructed images when the anti-aliasing filter is 
+% and is not used. Finally, see the effect of the anti-aliasing filter when the 
+% image is subsampled, i.e. sampled and reduced in size by the same factor. 
+% 
+% Important: Note that, when you see images in a Matlab window, they are usually 
+% sub-sampled based on the resolution of your screen. This may result in seeing 
+% aliasing effect, while the original image is aliasing free. To avoid this, maximize 
+% the window, zoom in, or save the image and see it in your favourite image presentation 
+% app in full resolution. 
 
 x = imread('star-chart.png'); %input image "focus pattern"
 X = fft2(x);  %spectrum
@@ -118,7 +106,9 @@ title('Magnitude spectrum')
 %   the Sampling theorem. 
 %
 % A = ... (frequency domain filter of the same size as the spectrum)
-%}
+
+A = image_generator('Gaussian',size(X),30);
+
 X_blur = ifftshift(fftshift(X).*A);
 x_blur = real(ifft2(X_blur)); 
 
@@ -152,6 +142,8 @@ title('Spectrum of the sampled image with anti-aliasing.')
 %    task.
 %  S = ... (frequency domain filter of the same size as the spectrum)
 %}
+
+S = image_generator('square',size(X),100);
 
 for f = [fig-1,fig] %Visualize the reconstruction filter extent
     figure(f); hold on 
@@ -191,6 +183,3 @@ title('Subsampled image without anti-aliasing.');
 fig = fig+1; figure(fig), 
 imagesc(x_blur(1:T:end, 1:T:end)); colormap gray; axis image
 title('Subsampled image with anti-aliasing.');
-
-
-

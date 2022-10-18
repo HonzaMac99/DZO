@@ -37,12 +37,12 @@ switch sig_type
         end
         
     case 'square'    %s
-        s = varargin{1};  
+        s = varargin{1};          
         
         for i = 1:imsize(1)
             for j = 1:imsize(2)
-                if (j > centre_x - s && j < centre_x + s) && ...
-                   (i > centre_y - s && i < centre_y + s)
+                if ((j > centre_x - s) && (j < centre_x + s)) && ...
+                   ((i > centre_y - s) && (i < centre_y + s))
                     I(i, j) = 1;
                 end
             end
