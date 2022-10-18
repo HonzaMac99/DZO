@@ -143,7 +143,7 @@ title('Spectrum of the sampled image with anti-aliasing.')
 %  S = ... (frequency domain filter of the same size as the spectrum)
 %}
 
-S = image_generator('square',size(X),100);
+S = image_generator('square',size(X),125);
 
 for f = [fig-1,fig] %Visualize the reconstruction filter extent
     figure(f); hold on 
