@@ -59,11 +59,11 @@ fig=fig+1; figure(fig); imagesc(x); colormap gray; axis image; title('Circ')
 fig=fig+1; figure(fig); show_spectrum(X,'gray'); title('Circ magnitude spectrum')
 
 %inv_circ
-x = image_generator('inv_circ',[512,512],15);
-X = fft2(x);
-
-fig=fig+1; figure(fig); imagesc(x); colormap gray; axis image; title('Inverse circ')
-fig=fig+1; figure(fig); show_spectrum(X,'gray'); title('Inverse circ magnitude spectrum')
+% x = image_generator('inv_circ',[512,512],15);
+% X = fft2(x);
+% 
+% fig=fig+1; figure(fig); imagesc(x); colormap gray; axis image; title('Inverse circ')
+% fig=fig+1; figure(fig); show_spectrum(X,'gray'); title('Inverse circ magnitude spectrum')
 
 %Gaussian
 x = image_generator('Gaussian',[512,512],5);
@@ -92,15 +92,15 @@ x0 = double(sum(x0,3)/3);
 
 X0 = fft2(x0);
 
+A = abs(X0);
+Phi = angle(X0);
+
 %TODO
 %  - Switch phase of the specrum to constant 0. X1 will be the spectrum of
 %    the image having the same magnitude as the spectrum of the input image,
 %    but a constant (zero) phase. 
 
-A = abs(X0);
-Phi = angle(X0);
 X1 = A;
-
 x1 = ifft2(X1); %inverse fft (result is an image)
 
 %TODO 
@@ -109,7 +109,6 @@ x1 = ifft2(X1); %inverse fft (result is an image)
 %    image, but a constant magnitude (a_i = 1 for all frequencies). 
 
 X2 = ones(size(X0)).*exp(Phi*1i);
-
 x2 = real(ifft2(X2)); %inverse fft (result is an image)
 
 fig = fig+1;
@@ -189,6 +188,7 @@ axis image;
 
 x = imread('Lenna.png');
 x = double(sum(x,3)/3);
+imsize = size(x);
 
 fig = fig+1; figure(fig);
 image(x); colormap gray; 
@@ -213,12 +213,12 @@ axis image; title('Magnitude spectrum');
 
 %low pass 
 G = image_generator('Gaussian', imsize, 20);
-Yg = X.*G; %low-pass filtered spectrum
+Yg = ifftshift(fftshift(X).*G); %low-pass filtered spectrum
 
 
 %high pass
 H = image_generator('inv_circ', imsize, 15);
-Yh = X.*H; %high-pass filtered spectrum
+Yh = ifftshift(fftshift(X).*H); %high-pass filtered spectrum
 
 
 %low pass
