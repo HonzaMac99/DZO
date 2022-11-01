@@ -89,7 +89,7 @@ function kernel = dgauss(ker_size, gauss_stddev, der_var)
             error('Unknown derivation variable parameter, use x or y')     
     end
     
-    kernel = kernel ./ sum(sum(kernel));
+    %kernel = kernel ./ sum(sum(kernel));
 end
 
 % Laplacian of Gaussian (LoG)
@@ -97,7 +97,7 @@ function kernel = lgauss(ker_size, gauss_stddev)
     % TODO
     kernel = zeros(ker_size, ker_size);
     
-    kernel = kernel ./ abs(sum(sum(kernel)));
+    %kernel = kernel ./ abs(sum(sum(kernel)));
 end
 
 %% 3: Implement simple separable kernels (average, sobel, gauss)
