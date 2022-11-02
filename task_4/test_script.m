@@ -15,29 +15,29 @@
 
 image_gray = rgb2gray(imread('images/car.jpg'));
 
-kernel_gen = get_kernel('average');
-kernel = kernel_gen(9,9);
-image_out = convolution_2D(image_gray, kernel);
-plot_conv_brute(image_gray, image_out, kernel, 'Average')
-
-kernel_gen = get_kernel('sobel');
-kernel = kernel_gen('x');
-image_out = convolution_2D(image_gray, kernel);
-plot_conv_brute(image_gray, image_out, kernel, 'Sobel')
-
-kernel_gen = get_kernel('gauss');
-kernel = kernel_gen(11,2);
-image_out = convolution_2D(image_gray, kernel);
-plot_conv_brute(image_gray, image_out, kernel, 'Gauss')
+% kernel_gen = get_kernel('average');
+% kernel = kernel_gen(9,9);
+% image_out = convolution_2D(image_gray, kernel);
+% plot_conv_brute(image_gray, image_out, kernel, 'Average')
+% 
+% kernel_gen = get_kernel('sobel');
+% kernel = kernel_gen('x');
+% image_out = convolution_2D(image_gray, kernel)+0.5;
+% plot_conv_brute(image_gray, image_out, kernel, 'Sobel')
+% 
+% kernel_gen = get_kernel('gauss');
+% kernel = kernel_gen(11,2);
+% image_out = convolution_2D(image_gray, kernel);
+% plot_conv_brute(image_gray, image_out, kernel, 'Gauss')
 
 kernel_gen = get_kernel('dgauss');
 kernel = kernel_gen(11,2,'x');
-image_out = convolution_2D(image_gray, kernel);
+image_out = convolution_2D(image_gray, kernel)+0.5;
 plot_conv_brute(image_gray, image_out, kernel, 'Gauss derivative along x')
 
 kernel_gen = get_kernel('lgauss');
 kernel = kernel_gen(11,2);
-image_out = convolution_2D(image_gray, kernel);
+image_out = convolution_2D(image_gray, kernel)+0.5;
 plot_conv_brute(image_gray, image_out, kernel, 'LoG')
 
 %% 2: Test the implementation of convolution using Fourier transform

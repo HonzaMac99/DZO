@@ -126,7 +126,7 @@ function kernel = lgauss(ker_size, gauss_stddev)
             y = i - centre_y;
             x = j - centre_x;
             e = exp(-(x^2 + y^2)/(2*gauss_stddev));
-            kernel(i, j) = e*((x^2 + y^2)/gauss_stddev -2)/gauss_stddev;
+            kernel(i, j) = e*(x + y - 4)/gauss_stddev;
         end
     end
     
