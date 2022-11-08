@@ -15,20 +15,20 @@
 
 image_gray = rgb2gray(imread('images/car.jpg'));
 
-% kernel_gen = get_kernel('average');
-% kernel = kernel_gen(9,9);
-% image_out = convolution_2D(image_gray, kernel);
-% plot_conv_brute(image_gray, image_out, kernel, 'Average')
-% 
-% kernel_gen = get_kernel('sobel');
-% kernel = kernel_gen('x');
-% image_out = convolution_2D(image_gray, kernel)+0.5;
-% plot_conv_brute(image_gray, image_out, kernel, 'Sobel')
-% 
-% kernel_gen = get_kernel('gauss');
-% kernel = kernel_gen(11,2);
-% image_out = convolution_2D(image_gray, kernel);
-% plot_conv_brute(image_gray, image_out, kernel, 'Gauss')
+kernel_gen = get_kernel('average');
+kernel = kernel_gen(9,9);
+image_out = convolution_2D(image_gray, kernel);
+plot_conv_brute(image_gray, image_out, kernel, 'Average')
+
+kernel_gen = get_kernel('sobel');
+kernel = kernel_gen('x');
+image_out = convolution_2D(image_gray, kernel)+0.5;
+plot_conv_brute(image_gray, image_out, kernel, 'Sobel')
+
+kernel_gen = get_kernel('gauss');
+kernel = kernel_gen(11,2);
+image_out = convolution_2D(image_gray, kernel);
+plot_conv_brute(image_gray, image_out, kernel, 'Gauss')
 
 kernel_gen = get_kernel('dgauss');
 kernel = kernel_gen(11,2,'x');
@@ -51,7 +51,7 @@ plot_conv_ft(image_gray, image_out, kernel, 'Average')
 
 kernel_gen = get_kernel('sobel');
 kernel = kernel_gen('x');
-image_out = convolution_2D_ft(image_gray, kernel);
+image_out = convolution_2D_ft(image_gray, kernel)+0.5;
 plot_conv_ft(image_gray, image_out, kernel, 'Sobel')
 
 kernel_gen = get_kernel('gauss');
@@ -66,17 +66,17 @@ image_gray = rgb2gray(imread('images/car.jpg'));
 kernel_gen = get_kernel('average_sep');
 [kernel_x, kernel_y] = kernel_gen(9,9);
 image_out = convolution_2D(convolution_2D(image_gray, kernel_x), kernel_y);
-plot_conv_brute(image_gray, image_out, kernel_y * kernel_x, 'Average')
+plot_conv_brute(image_gray, image_out, kernel_y * kernel_x, 'Average sep')
 
 kernel_gen = get_kernel('sobel_sep');
 [kernel_x, kernel_y] = kernel_gen('x');
-image_out = convolution_2D(convolution_2D(image_gray, kernel_x), kernel_y);
-plot_conv_brute(image_gray, image_out, kernel_y * kernel_x, 'Sobel')
+image_out = convolution_2D(convolution_2D(image_gray, kernel_x), kernel_y)+0.5;
+plot_conv_brute(image_gray, image_out, kernel_y * kernel_x, 'Sobel sep')
 
 kernel_gen = get_kernel('gauss_sep');
 [kernel_x, kernel_y] = kernel_gen(11,2);
 image_out = convolution_2D(convolution_2D(image_gray, kernel_x), kernel_y);
-plot_conv_brute(image_gray, image_out, kernel_y * kernel_x, 'Gauss')
+plot_conv_brute(image_gray, image_out, kernel_y * kernel_x, 'Gauss sep')
 
 %% 4: Wiener filter
 %  - implement Wiener filter for image deblurring (wiener_filt.m)
