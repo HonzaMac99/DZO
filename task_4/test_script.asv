@@ -114,9 +114,9 @@ image_noise = add_noise(image_gray, 10.0/255.0);
 
 kersize = 15;
 % - standard deviation of the smoothing Gaussian kernel
-smooth_stddev = 5^2;
+smooth_stddev = 25;
 % - standard deviation of the intensity difference Gaussian transform
-int_stddev = 0.1^2;
+int_stddev = 0.1^22;
 
 % - filter the noisy image with the bilateral filter
 image_filt_bil = bilateral_filt(image_noise, [kersize,kersize], smooth_stddev, int_stddev);

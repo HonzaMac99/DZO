@@ -22,7 +22,70 @@ function image_out = bilateral_filt( image, ksize, space_stddev, intensity_stdde
 %   the window
 % - normalize each output pixel by the sum of the corresponding weights
 
+img_size_y = size(image, 1);
+img_size_x = size(image, 2);
+
+ker_size_y = ksize(1);
+ker_size_x = ksize(2);
+
+ker_center_y = ceil(ker_size_y/2);
+ker_center_x = ceil(ker_size_x/2);
+
+% create padded image for kernel operations
+padded_image = zeros(size(image) + ksize - mod(ksize, 2));
+for i = 1:size(padded_image,1)
+    for j = 1:size(padded_image,2)
+        img_coord_y = i-floor(ker_size_y/2);
+        img_coord_x = j-floor(ker_size_x/2);
+        if img_coord_y < 1
+            if img_coord_x < 1
+                padded_image(i, j) = image(1, 1);
+            elseif img_coord_x > img_size_x
+                padded_image(i, j) = image(1,end);
+            else
+                padded_image(i, j) = image(1, img_coord_x);
+            end
+        elseif img_coord_y > img_size_y
+            if img_coord_x < 1
+                padded_image(i, j) = image(end, 1);
+            elseif img_coord_x > img_size_x
+                padded_image(i, j) = image(end, end);
+            else
+                padded_image(i, j) = image(end, img_coord_x);
+            end
+        elseif img_coord_x < 1
+            padded_image(i, j) = image(img_coord_y, 1);
+        elseif img_coord_x > img_size_x
+                padded_image(i, j) = image(img_coord_y, end);
+        else
+            padded_image(i, j) = image(img_coord_y, img_coord_x);
+        end
+    end
+end
+
+
+% make the kernel convolution on padded image
 image_out = zeros(size(image));
+for i = 1:img_size_y
+    for j = 1:img_size_x
+        sum_pix_val = 0;
+        sum_w = 0;
+        for k = 0:ker_size_y-1
+            for l = 0:ker_size_x-1              
+                dist = sqrt((k+1 - ker_center_y)^2 + (l+1 - ker_center_x)^2);
+                contrast = padded_image(i + ker_center_y-1, j + ker_center_x-1) - padded_image(i + k, j + l);
+                
+                gauss_space_val = 1/sqrt(2*pi*space_stddev)*exp(-dist^2/(2*space_stddev));
+                gauss_intensity_val = 1/sqrt(2*pi*intensity_stddev)*exp(-contrast^2/(2*intensity_stddev));
+                                           
+                sum_pix_val = sum_pix_val + padded_image(i+k, j+l)*gauss_space_val*gauss_intensity_val;     
+                sum_w = sum_w + gauss_space_val*gauss_intensity_val; 
+            end
+        end      
+        image_out(i, j) = sum_pix_val/sum_w;
+    end
+end
+
 
 end
 

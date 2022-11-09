@@ -70,7 +70,7 @@ function kernel = gauss(ker_size, gauss_stddev)
         for j = 1:ker_size
             y = i - centre_y;
             x = j - centre_x;
-            kernel(i, j) = exp(-(x^2 + y^2)/(2*gauss_stddev));
+            %kernel(i, j) = exp(-(x^2 + y^2)/(2*gauss_stddev));
             kernel(i, j) = 1/(2*pi*gauss_stddev)*exp(-(x^2 + y^2)/(2*gauss_stddev));
         end
     end
