@@ -53,7 +53,7 @@ image_out = zeros(size(image));
 for i = 1:img_size_y
     for j = 1:img_size_x
         A = padded_image(i:i+ker_size_y-1, j:j+ker_size_x-1).*kernel;
-        image_out(i, j) = sum(A,'all');
+        image_out(i, j) = sum(sum(A));
     end
 end
 

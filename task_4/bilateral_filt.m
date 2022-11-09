@@ -22,6 +22,9 @@ function image_out = bilateral_filt( image, ksize, space_stddev, intensity_stdde
 %   the window
 % - normalize each output pixel by the sum of the corresponding weights
 
+space_stddev = space_stddev^2;
+intensity_stddev = intensity_stddev^2;
+
 img_size_y = size(image, 1);
 img_size_x = size(image, 2);
 

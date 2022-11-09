@@ -75,13 +75,13 @@ function kernel = gauss(ker_size, gauss_stddev)
         end
     end
 
-    kernel = kernel ./ sum(kernel, 'all');
+    kernel = kernel ./ sum(sum(kernel));
 end
 
 % Gauss Derivation in the given direction
 function kernel = dgauss(ker_size, gauss_stddev, der_var)
 
-    % gauss_stddev = sigma^2
+    % gauss_stddev = sigma^2  
     centre_y = ceil(ker_size/2);
     centre_x = ceil(ker_size/2);
 
@@ -112,12 +112,14 @@ function kernel = dgauss(ker_size, gauss_stddev, der_var)
         otherwise
             error('Unknown derivation variable parameter, use x or y')     
     end
+    %creates a lot of computational error
     %kernel = kernel ./ sum(sum(kernel));
 end
 
 % Laplacian of Gaussian (LoG)
 function kernel = lgauss(ker_size, gauss_stddev)
-    % gauss_stddev = sigma^2
+
+    % gauss_stddev = sigma^2  
     centre_y = ceil(ker_size/2);
     centre_x = ceil(ker_size/2);
     
@@ -130,7 +132,7 @@ function kernel = lgauss(ker_size, gauss_stddev)
             kernel(i, j) = e*((x^2 + y^2)/gauss_stddev -2)/gauss_stddev;
         end
     end
-    
+    %creates a lot of computational error
     %kernel = kernel ./ abs(sum(sum(kernel)));
 end
 
@@ -149,13 +151,11 @@ function [kernel_x, kernel_y] = sobel_sep(direction)
     switch direction
         case 'x'
             % - filter highlighting intensity changes in the x direction
-            % TODO
             kernel_x = [1 0 -1];
             kernel_y = [1; 2; 1];
 
         case 'y'
             % - filter highlighting intensity changes in the y direction
-            % TODO
             kernel_x = [1 2 1];
             kernel_y = [1; 0; -1];
 
@@ -166,7 +166,8 @@ end
 
 % Separable Gauss filter
 function [kernel_x, kernel_y] = gauss_sep(ker_size, gauss_stddev)
-    
+
+    % gauss_stddev = sigma^2
     center = ceil(ker_size/2);   
     kernel_x = zeros(1, ker_size);
     kernel_y = zeros(ker_size, 1);
