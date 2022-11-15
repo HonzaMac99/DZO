@@ -1,0 +1,3 @@
+function M = get_mask(GxA, GyA, GxB, GyB)
+
+...

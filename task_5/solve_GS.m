@@ -1,0 +1,3 @@
+function O = solve_GS(A, B, M, divI)
+
+...

@@ -1,0 +1,3 @@
+function [Gx, Gy] = merge_grad(GxA, GyA, GxB, GyB, M)
+
+...

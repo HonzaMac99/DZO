@@ -1,0 +1,3 @@
+function O = merge_image(A, B, M)
+
+...

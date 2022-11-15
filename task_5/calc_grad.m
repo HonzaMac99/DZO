@@ -1,0 +1,3 @@
+function [Gx, Gy] = calc_grad(I)
+
+...
