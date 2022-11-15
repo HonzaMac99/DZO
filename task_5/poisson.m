@@ -12,6 +12,8 @@ B = double(imread('data/ginevra_benci.png'));
 [GxA, GyA] = calc_grad(A);
 [GxB, GyB] = calc_grad(B);
 
+imshow(GxA/(2*255)+0.5);
+
 %%% read/generate mask
 
 M = double(imread('data/mona_mask.png'));
@@ -36,9 +38,16 @@ imwrite(O/255,'0_before.png');
 
 %%% solve using Gauss-Seidel / Poisson
 
+% reduce the computations: create a bounding box over the mask
 O = solve_GS(A, B, M, divI);
 
+% use lambda very small like 10^-14
+% after wiener take only real values
+% use fftshift on the laplace kernel in the F domain
+% so that it will be in the pos of [0, 0] of the img
+
 % O = solve_FT(A, B, M, divI);
+
 
 %%% save output image
 
