@@ -1,24 +1,26 @@
 
 %%% read input images
 
-A = double(imread('data/mona_lisa.png'));
-B = double(imread('data/ginevra_benci.png'));
+% A = double(imread('data/mona_lisa.png'));
+% B = double(imread('data/ginevra_benci.png'));
 
-% A = double(imread('data/car_low.png'));
-% B = double(imread('data/car_high.png'));
+A = double(imread('data/car_low.png'));
+B = double(imread('data/car_high.png'));
 
 %%% compute gradients
 
 [GxA, GyA] = calc_grad(A);
 [GxB, GyB] = calc_grad(B);
 
-imshow(GxA/(2*255)+0.5);
+%imshow(GxA/(2*255)+0.5);
+%imshow(GyA/(2*255)+0.5);
 
 %%% read/generate mask
 
 M = double(imread('data/mona_mask.png'));
 
-% M = get_mask(GxA, GyA, GxB, GyB);
+M = get_mask(GxA, GyA, GxB, GyB);
+imshow(M/255);
 
 %%% merge gradients
 
