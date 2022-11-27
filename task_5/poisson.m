@@ -1,5 +1,5 @@
 
-%%% read input images
+%%% read input images -> OK
 
 A = double(imread('data/mona_lisa.png'));
 B = double(imread('data/ginevra_benci.png'));
@@ -7,52 +7,61 @@ B = double(imread('data/ginevra_benci.png'));
 % A = double(imread('data/car_low.png'));
 % B = double(imread('data/car_high.png'));
 
-%%% compute gradients
+%%% compute gradients -> OK
 
 [GxA, GyA] = calc_grad(A);
 [GxB, GyB] = calc_grad(B);
 
-%imshow(GxA/(2*255)+0.5);
-%imshow(GyA/(2*255)+0.5);
+% imshow(GxA/255+0.5);
+% imshow(GyA/255+0.5);
 
-%%% read/generate mask
+%%% read/generate mask -> OK
 
 M = double(imread('data/mona_mask.png'));
 
 % M = get_mask(GxA, GyA, GxB, GyB);
 % imshow(M/255);
 
-%%% merge gradients
+%%% merge gradients -> OK
 
 [Gx, Gy] = merge_grad(GxA, GyA, GxB, GyB, M);
 
-%%% compute divergence
+%%% compute divergence -> OK
 
 divI = calc_div(Gx, Gy);
-imshow(divI/255+0.5);
+%imshow(sum(divI,3)/255 + 0.5);
 
-%%% compute naive merge
+% divI = calc_div_img(A);
+% imshow(divI(:,:,1)/255 + 0.5);
 
-% O = merge_image(A, B, M);
-% imshow(O/255);
+%%% compute naive merge -> OK
 
-%%% save naive merge
+O = merge_image(A, B, M);
+%imshow(O/255);
+
+%%% save naive merge -> OK
 
 imwrite(O/255,'0_before.png');
 
-%%% solve using Gauss-Seidel / Poisson
+%%% solve using Gauss-Seidel / Poisson -> OK
 
-% reduce the computations: create a bounding box over the mask
-O = solve_GS(A, B, M, divI);
+% reduce the computations: create a bounding box over the mask 
+% O = solve_GS(A, B, M, divI);
+% imshow(O/255);
+
+
+%%% solve using FT -> OK
 
 % use lambda very small like 10^-14
 % after wiener take only real values
 % use fftshift on the laplace kernel in the F domain
 % so that it will be in the pos of [0, 0] of the img
 
-% O = solve_FT(A, B, M, divI);
+O = solve_FT(A, B, M, divI);
+O = match_hists(O/255, A/255)*255;
+imshow(O/255);
 
 
-%%% save output image
+%%% save output image -> OK
 
 imwrite(O/255,'1_after.png');

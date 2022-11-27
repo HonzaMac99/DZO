@@ -1,17 +1,16 @@
 function [Gx, Gy] = merge_grad(GxA, GyA, GxB, GyB, M)
 
-    Gx = zeros(size(GxA,1:2));
-    Gy = zeros(size(GyA,1:2));
+    Gx = zeros(size(GxA));
+    Gy = zeros(size(GyA));
 
-    msize = size(M);
-    for i = 1:msize(1)
-        for j = 1:msize(2)
+    for i = 1:size(M,1)
+        for j = 1:size(M,2)
             if M(i,j) == 0
-                Gx(i,j) = sqrt(sum(GxA(i,j,:).^2));
-                Gy(i,j) = sqrt(sum(GyA(i,j,:).^2));
+                Gx(i,j,:) = GxA(i,j,:);
+                Gy(i,j,:) = GyA(i,j,:);
             else
-                Gx(i,j) = sqrt(sum(GxB(i,j,:).^2));
-                Gy(i,j) = sqrt(sum(GyB(i,j,:).^2));
+                Gx(i,j,:) = GxB(i,j,:);
+                Gy(i,j,:) = GyB(i,j,:);
             end
         end
     end
