@@ -18,8 +18,8 @@ B = double(imread('data/ginevra_benci.png'));
 %%% read/generate mask -> OK
 
 M = double(imread('data/mona_mask.png'));
+%M = get_mask(GxA, GyA, GxB, GyB);
 
-% M = get_mask(GxA, GyA, GxB, GyB);
 % imshow(M/255);
 
 %%% merge gradients -> OK
@@ -58,7 +58,9 @@ imwrite(O/255,'0_before.png');
 % so that it will be in the pos of [0, 0] of the img
 
 O = solve_FT(A, B, M, divI);
-O = match_hists(O/255, A/255)*255;
+% for i = 1:3
+%     O(:,:,i) = match_hists(O(:,:,i)/255, A(:,:,i)/255)*255;
+% end
 imshow(O/255);
 
 
