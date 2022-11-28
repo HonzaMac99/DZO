@@ -55,13 +55,14 @@ imwrite(O/255,'0_before.png');
 % use lambda very small like 10^-14
 % after wiener take only real values
 % use fftshift on the laplace kernel in the F domain
-% so that it will be in the pos of [0, 0] of the img
+% so that it will be in the pos of [0, 0] of the img 
+% - fftshift not working
 
 O = solve_FT(A, B, M, divI);
 % for i = 1:3
 %     O(:,:,i) = match_hists(O(:,:,i)/255, A(:,:,i)/255)*255;
 % end
-imshow(O/255);
+% imshow(O/255);
 
 
 %%% save output image -> OK
