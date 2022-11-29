@@ -17,17 +17,18 @@ max = 0;
 max_coord_x = 0;
 max_coord_y = 0;
 for i = 1:size(im3,1)
-    for j = 1:size(im3,2)
+    for j 1:size(im3,2)
         if im3(i,j) > max
-            max = im3(i,j);
+            max = im3(i,j)
             max_coord_y = i;
             max_coord_x = j;
         end
     end
 end
 
-dy = max_coord_y - c_y;
-dx = max_coord_x - c_x;
+dx = max_coord_y - c_y;
+
+
 ...
 
 % (note: you may find function ffcenter.m provided useful)
