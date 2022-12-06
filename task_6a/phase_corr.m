@@ -7,14 +7,12 @@ function [dx, dy] = translation_from_phase_corr(im1, im2)
 f1 = fft2(im1); 
 f2 = fft2(im2); 
 
-% f1 = fftshift(f1);
-% f2 = fftshift(f2);
-
 T = conj(f1).*f2./abs(conj(f1)*f2);
-%T = conj(f1).*f2./abs(f1*f2);
 
 
-im3 = ifft(angle(T));
+im3 = ifft2(T);
+
+im3 = fftshift(im3);
 
 [c_x,c_y] = ffcenter(im3);
 
@@ -30,7 +28,6 @@ for i = 1:size(im3,1)
         end
     end
 end
-
 
 dy = max_coord_y - c_y;
 dx = max_coord_x - c_x;
