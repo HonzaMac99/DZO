@@ -8,7 +8,7 @@ delta_t = 1/H;
 delta_phi = 1/H;
 N = log(H);
 
-[t, phi] = meshgrid(0:delta_t:N+delta_t, delta_phi:delta_phi:2*pi); 
+[t, phi] = meshgrid(0:delta_t:N, delta_phi:delta_phi:2*pi); 
 
 x_ = exp(t).*cos(phi) + cx;
 y_ = exp(t).*sin(phi) + cy;
