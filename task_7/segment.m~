@@ -73,7 +73,6 @@ for x=1:w
        source(eid) = S;
        target(eid) = id(x,y);
        
-       % check for white color
        if usr(x, y, 1) == 255
            capacity(eid) = ES;
        else
@@ -86,8 +85,7 @@ for x=1:w
        source(eid) = id(x,y);
        target(eid) = T;
        
-       % check for green color
-       if usr(x, y, 1) == 14
+       if usr(x, y, 1) == 
            capacity(eid) = ES;
        else
            capacity(eid) = 0;
@@ -108,7 +106,7 @@ for x=1:w
         if x < w && y < h
             source(eid:eid+3) = [id(x,y), id(x,y), id(x+1,y), id(x,y+1)];
             target(eid:eid+3) = [id(x+1,y), id(x,y+1), id(x,y), id(x,y)];
-            %1+ min(I1, I2)^6*2000;
+            ...
             eid = eid+4;      
 
         elseif x == w && y < h
