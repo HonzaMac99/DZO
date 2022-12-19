@@ -1,7 +1,7 @@
     
 %%% Read input images (drawing and scribbles):
 
-pic = double(imread('data/drawing.png'));
+pic = double(imread('data/drawing.png'))/255;
 usr = double(imread('data/scribbles.png'));
 
 % Info:
@@ -38,7 +38,7 @@ T = w * h + 2;
 
 vid = 1; % vertex index
 
-id = zeros(size(pic));
+id = zeros(size(pic,1:2));
 idx = zeros(1,w);
 idy = zeros(1,h);
 
@@ -56,7 +56,8 @@ end
 %%% according to scribbles stored in "usr" (use "SK") [3 points]:
 
 eid = 1; % edge index
-n_edges = w*(h-1) + (w-1)*h + 2*w*h;
+% directed edges between pixels and from S and T to all pixels
+n_edges = 2*w*(h-1) + 2*(w-1)*h + 2*w*h;
 
 source = zeros(1, n_edges);
 target = zeros(1, n_edges);
@@ -67,28 +68,32 @@ capacity = zeros(1, n_edges);
 % "source(eid)" = index of source (from) graph vertex
 % "target(eid)" = index of target (to) graph vertex
 % "capacity(eid)" = edge capacity
+
+% create edges from source "S"
 for x=1:w
     for y=1:h 
-       % edge from source
        source(eid) = S;
        target(eid) = id(x,y);
        
        % check for white color
        if usr(x, y, 1) == 255
-           capacity(eid) = ES;
+           capacity(eid) = SK;
        else
            capacity(eid) = 0;
-       end  
-       
+       end         
        eid = eid + 1;
-       
-       % edge to sink
+    end
+end
+
+% create edges to sink "T"
+for x=1:w
+    for y=1:h        
        source(eid) = id(x,y);
        target(eid) = T;
        
        % check for green color
        if usr(x, y, 1) == 14
-           capacity(eid) = ES;
+           capacity(eid) = SK;
        else
            capacity(eid) = 0;
        end      
@@ -103,24 +108,36 @@ end
 %%% between white and dark pixels (remember that edge capacity between 
 %%% pixels shouldn't be equal to zero) [4 points]:
 
+%cap = 1 + min(I1, I2)^6*2000;
+
 for x=1:w
     for y=1:h
         if x < w && y < h
             source(eid:eid+3) = [id(x,y), id(x,y), id(x+1,y), id(x,y+1)];
             target(eid:eid+3) = [id(x+1,y), id(x,y+1), id(x,y), id(x,y)];
-            %1+ min(I1, I2)^6*2000;
+            
+            cap1 = 1 + min(pic(x,y), pic(x+1,y))^6*EK;
+            cap2 = 1 + min(pic(x,y), pic(x,y+1))^6*EK;
+            capacity(eid:eid+3) = [cap1, cap2, cap1, cap2];
+            
             eid = eid+4;      
 
         elseif x == w && y < h
            source(eid:eid+1) = [id(x,y), id(x,y+1)];
            target(eid:eid+1) = [id(x,y+1), id(x,y)];
-           ...
+           
+           cap1 = 1 + min(pic(x,y), pic(x,y+1))^6*EK;
+           capacity(eid:eid+1) = [cap1, cap1];
+           
            eid = eid+2;
        
         elseif x < w && y == h
-           source(eid:eid+1) = [id(x,y), id(x,y+1)];
-           target(eid:eid+1) = [id(x,y+1), id(x,y)];
-           ...
+           source(eid:eid+1) = [id(x+1,y), id(x,y)];
+           target(eid:eid+1) = [id(x,y), id(x+1,y)];
+           
+           cap1 = 1 + min(pic(x,y), pic(x+1,y))^6*EK;
+           capacity(eid:eid+1) = [cap1, cap1];
+           
            eid = eid+2;
 
         end
@@ -132,6 +149,7 @@ end
 %%% and "capacity" arrays prepared in previous steps:
 
 G = digraph(source, target, capacity);
+%plot(G,'Layout','force',G.Edges.Weight)
 
 [MF,GF,CS,CT] = maxflow(G,S,T);
 
@@ -140,16 +158,16 @@ G = digraph(source, target, capacity);
 %%% intensity with the color components of the green color. Use "idx"
 %%% and "idy" to lookup pixel coordiantes [1.5 points]: 
 
-out = pic; % copy the input drawing to the output
+% copy the input drawing to the output
+out = pic*255;
+ 
+% setup green color RGB values
+col_g = [14, 138, 8];
 
-col(1) = 14; % setup green color RGB values
-col(2) = 138;
-col(3) = 8; 
-
-for id=1:size(CT)
-    x_coord = idx(CT(id));
-    y_coord = idx(CT(id));
-    pic(x_coord, y_coord, :) = col; 
+for id=1:size(CT)-2
+    x = idx(CT(id));
+    y = idy(CT(id));
+    out(x, y, :) = col_g*pic(x,y); 
 end
 
 %%% Save the resulting colorized image:
