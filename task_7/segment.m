@@ -149,7 +149,7 @@ end
 %%% and "capacity" arrays prepared in previous steps:
 
 G = digraph(source, target, capacity);
-%plot(G,'Layout','force',G.Edges.Weight)
+%plot(G)
 
 [MF,GF,CS,CT] = maxflow(G,S,T);
 
